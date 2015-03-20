@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="zuira-server" basedir="." default="mvn">
+<project name="zueira-server" basedir="." default="mvn">
 	<target name="mvn">
 		<exec dir="." executable="cmd.exe">
 			<arg line="/c mvn clean package install" />
