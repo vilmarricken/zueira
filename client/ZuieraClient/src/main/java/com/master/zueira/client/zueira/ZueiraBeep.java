@@ -11,8 +11,9 @@ public class ZueiraBeep implements Zueira {
 	@Override
 	public void run(final String value) {
 		final int values[] = new int[] { 2, 200 };
+		final Toolkit tk = Toolkit.getDefaultToolkit();
 		for (int i = 0; i < values[0]; i++) {
-			Toolkit.getDefaultToolkit().beep();
+			tk.beep();
 			try {
 				Thread.sleep(values[1]);
 			} catch (final InterruptedException e) {
