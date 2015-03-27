@@ -6,6 +6,8 @@ import java.net.Socket;
 
 public class ZueiraRun implements Runnable {
 
+	private static int OPTION_RUN = 1;
+
 	private Socket socket;
 
 	public ZueiraRun(final Socket socket) {

@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Random;
 
@@ -18,9 +19,9 @@ public class ZueiraClient {
 
 	private static final String RESPONSE_MESSAGE = "Zueira on";
 
-	private static final String SEND_IDENTITY_MESSAGE = "Zueira connected in: ";
+	private static final String SEND_IDENTITY_MESSAGE = "Zueira connected in:\t";
 
-	public static void main(final String[] args) {
+	public static void main(final String[] args) throws IOException {
 		new ZueiraClient().execute();
 	}
 
@@ -31,7 +32,7 @@ public class ZueiraClient {
 		try {
 			final DatagramSocket client = new DatagramSocket();
 			client.setBroadcast(true);
-			final byte[] message = (SEND_IDENTITY_MESSAGE + port).getBytes();
+			final byte[] message = (SEND_IDENTITY_MESSAGE + port + "\t" + System.getProperty("user.name")).getBytes();
 			try {
 				final DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(BROADCAST_MASK), BROADCAST_SERVICE);
 				client.send(sendPacket);
@@ -73,10 +74,14 @@ public class ZueiraClient {
 		}
 	}
 
-	public void execute() {
+	public void execute() throws IOException {
 		final ServerSocket ss = this.initService();
 		final int port = ss.getLocalPort();
 		this.discover(port);
+		while (true) {
+			final Socket s = ss.accept();
+			new Thread(new ZueiraRun(s)).start();
+		}
 	}
 
 	private ServerSocket initService() {
