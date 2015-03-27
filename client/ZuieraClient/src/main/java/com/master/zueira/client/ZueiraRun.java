@@ -1,12 +1,16 @@
 package com.master.zueira.client;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
+import com.master.zueira.client.zueira.Zueira;
+import com.master.zueira.client.zueira.ZueiraFactory;
+
 public class ZueiraRun implements Runnable {
 
-	private static int OPTION_RUN = 1;
+	private static String OPTION_RUN = "1";
 
 	private Socket socket;
 
@@ -19,15 +23,25 @@ public class ZueiraRun implements Runnable {
 			final InputStream in = this.socket.getInputStream();
 			final byte[] b = new byte[1024];
 			int t = -1;
-			final StringBuilder s = new StringBuilder();
+			final ByteArrayOutputStream out = new ByteArrayOutputStream(512);
 			while ((t = in.read(b)) > 0) {
-				s.append(new String(b, 0, t));
+				out.write(b, 0, t);
 			}
 			in.close();
+			try {
+				final String value = out.toString();
+				final String[] values = value.split("#");
+				if (values[0].equals(OPTION_RUN)) {
+					final Zueira z = ZueiraFactory.getZueira(values[1]);
+					z.run(values[2]);
+				}
+			} catch (final Exception e) {
+				final Zueira z = ZueiraFactory.getZueira(null);
+				z.run(null);
+			}
 			this.socket.close();
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 }
