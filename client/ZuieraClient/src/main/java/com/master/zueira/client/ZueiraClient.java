@@ -8,6 +8,7 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Random;
 
@@ -32,33 +33,15 @@ public class ZueiraClient {
 		try {
 			final DatagramSocket client = new DatagramSocket();
 			client.setBroadcast(true);
-			final byte[] message = (SEND_IDENTITY_MESSAGE + port + "\t" + System.getProperty("user.name")).getBytes();
+			sendBroadcast(client, port);
+			/*
 			try {
 				final DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(BROADCAST_MASK), BROADCAST_SERVICE);
 				client.send(sendPacket);
-			} catch (final Exception e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 			}
-			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-			while (interfaces.hasMoreElements()) {
-				final NetworkInterface networkInterface = interfaces.nextElement();
-				if (networkInterface.isLoopback() || !networkInterface.isUp()) {
-					continue;
-				}
-				for (final InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
-					final InetAddress broadcast = interfaceAddress.getBroadcast();
-					if (broadcast == null) {
-						continue;
-					}
-					try {
-						final DatagramPacket sendPacket = new DatagramPacket(message, message.length, broadcast, 8888);
-						client.send(sendPacket);
-					} catch (final Exception e) {
-						e.printStackTrace();
-					}
-					System.out.println(this.getClass().getName() + ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
-				}
-			}
+			*/
 			System.out.println(this.getClass().getName() + ">>> Done looping over all network interfaces. Now waiting for a reply!");
 			final byte[] recvBuf = new byte[15000];
 			final DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
@@ -71,6 +54,30 @@ public class ZueiraClient {
 			client.close();
 		} catch (final IOException ex) {
 			ex.printStackTrace();
+		}
+	}
+
+	private void sendBroadcast(DatagramSocket client, int port) throws IOException {
+		final byte[] message = (SEND_IDENTITY_MESSAGE + port + "\t" + System.getProperty("user.name")).getBytes();
+		final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+		while (interfaces.hasMoreElements()) {
+			final NetworkInterface networkInterface = interfaces.nextElement();
+			if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+				continue;
+			}
+			for (final InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+				final InetAddress broadcast = interfaceAddress.getBroadcast();
+				if (broadcast == null) {
+					continue;
+				}
+				try {
+					final DatagramPacket sendPacket = new DatagramPacket(message, message.length, broadcast, 8888);
+					client.send(sendPacket);
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println(this.getClass().getName() + ">>> Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
+			}
 		}
 	}
 

