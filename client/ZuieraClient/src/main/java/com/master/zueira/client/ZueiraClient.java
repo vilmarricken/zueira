@@ -8,13 +8,12 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Random;
 
 public class ZueiraClient {
 
-	private static final String BROADCAST_MASK = "255.255.0.0";
+	// private static final String BROADCAST_MASK = "255.255.0.0";
 
 	private static final int BROADCAST_SERVICE = 8888;
 
@@ -30,31 +29,44 @@ public class ZueiraClient {
 	}
 
 	public void discover(final int port) {
-		try {
-			final DatagramSocket client = new DatagramSocket();
-			client.setBroadcast(true);
-			sendBroadcast(client, port);
-			/*
+		DatagramSocket client = null;
+		boolean discovered = false;
+		do {
 			try {
-				final DatagramPacket sendPacket = new DatagramPacket(message, message.length, InetAddress.getByName(BROADCAST_MASK), BROADCAST_SERVICE);
-				client.send(sendPacket);
-			} catch (final IOException e) {
-				e.printStackTrace();
+				System.out.println("Try discover zueira");
+				discovered = false;
+				client = new DatagramSocket();
+				client.setBroadcast(true);
+				sendBroadcast(client, port);
+				discovered = receiveResponse(client);
+			} catch (final IOException ex) {
+				ex.printStackTrace();
 			}
-			*/
-			System.out.println(this.getClass().getName() + ">>> Done looping over all network interfaces. Now waiting for a reply!");
-			final byte[] recvBuf = new byte[15000];
+		} while (!discovered);
+	}
+
+	private boolean receiveResponse(DatagramSocket client) {
+		try {
+			final byte[] recvBuf = new byte[150];
 			final DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
+			client.setSoTimeout(5000);
 			client.receive(receivePacket);
 			System.out.println(this.getClass().getName() + ">>> Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
 			final String returnMessage = new String(receivePacket.getData()).trim();
 			if (returnMessage.equals(RESPONSE_MESSAGE)) {
-				System.out.println(receivePacket.getAddress());
+				return true;
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				Thread.sleep(1000 * 60 * 30);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
 			client.close();
-		} catch (final IOException ex) {
-			ex.printStackTrace();
 		}
+		return false;
 	}
 
 	private void sendBroadcast(DatagramSocket client, int port) throws IOException {
@@ -71,7 +83,7 @@ public class ZueiraClient {
 					continue;
 				}
 				try {
-					final DatagramPacket sendPacket = new DatagramPacket(message, message.length, broadcast, 8888);
+					final DatagramPacket sendPacket = new DatagramPacket(message, message.length, broadcast, ZueiraClient.BROADCAST_SERVICE);
 					client.send(sendPacket);
 				} catch (final Exception e) {
 					e.printStackTrace();

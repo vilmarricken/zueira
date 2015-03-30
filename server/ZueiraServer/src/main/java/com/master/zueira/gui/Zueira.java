@@ -1,38 +1,65 @@
 package com.master.zueira.gui;
 
-import java.awt.HeadlessException;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JTable;
-import javax.swing.table.TableModel;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import com.master.zueira.controller.VictimControllerFactory;
-import com.master.zueira.gui.component.VictimsTableModel;
 
-public class Zueira extends JFrame {
+public class Zueira extends JPanel {
 
 	/**
-	 *
+	 * 
 	 */
-	private static final long serialVersionUID = 7025955466565433554L;
+	private static final long serialVersionUID = 3689270434238404237L;
 
-	private JTable victims;
+	private JButton btZueira;
 
-	public Zueira() throws HeadlessException {
-		super("Zueira");
+	private JTextField txValues;
+
+	private String zueira;
+
+	private String label;
+
+	public Zueira(String zueira, String label) {
+		this.zueira = zueira;
+		this.label = label;
+		this.setLayout(new GridLayout(1, 2));
+		this.add(getBtZueira());
+		this.add(getTxValues());
 	}
 
-	public JTable getVictims() {
-		if (this.victims == null) {
-			this.victims = new JTable(this.getVictimsModel());
+	public JButton getBtZueira() {
+		if (this.btZueira == null) {
+			this.btZueira = new JButton();
+			this.btZueira.setSize(100, 100);
+			this.btZueira.setAction(getActionZueira());
 		}
-		return this.victims;
+		return btZueira;
 	}
 
-	private TableModel getVictimsModel() {
-		final VictimsTableModel model = new VictimsTableModel();
-		VictimControllerFactory.getInstance().setController(model);
-		return model;
+	private Action getActionZueira() {
+		return new AbstractAction(this.label) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3910212417931616053L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VictimControllerFactory.getInstance().zuar(Zueira.this.zueira);
+			}
+		};
+	}
+
+	public JTextField getTxValues() {
+		return txValues;
 	}
 
 }

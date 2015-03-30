@@ -10,4 +10,12 @@ public interface VictimController {
 
 	void removeVictim(Victim victim);
 
+	void zuar(String zueira);
+
+	Victim getVictim(int index);
+
+	int count();
+
+	void setSelected(int selectedRow);
+
 }

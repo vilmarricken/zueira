@@ -27,10 +27,6 @@ public class ZueiraDiscover implements Runnable {
 		return INSTANCE;
 	}
 
-	public static void main(final String[] args) {
-		getInstance();
-	}
-
 	private DatagramSocket socket;
 
 	private ZueiraDiscover() {

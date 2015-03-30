@@ -8,14 +8,14 @@ public class VictimControllerFactory {
 		return INSTANCE;
 	}
 
-	private VictimController controller;
+	private VictimController controller = new VictimControllerImpl();
 
 	public VictimController getController() {
 		return this.controller;
 	}
 
-	public void setController(final VictimController controller) {
-		this.controller = controller;
+	public void zuar(String zueira) {
+		controller.zuar(zueira);
 	}
 
 }

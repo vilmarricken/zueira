@@ -1,30 +1,19 @@
 package com.master.zueira.gui.component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import javax.swing.table.AbstractTableModel;
 
-import com.master.zueira.controller.VictimController;
+import com.master.zueira.controller.VictimControllerFactory;
 import com.master.zueira.object.Victim;
 
-public class VictimsTableModel extends AbstractTableModel implements VictimController {
+public class VictimsTableModel extends AbstractTableModel {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 4489852377476460408L;
-	private final List<Victim> victims = new ArrayList<Victim>();
 
 	public VictimsTableModel() {
 		super();
-	}
-
-	@Override
-	public void addVictim(final String name, final String address, final int service) {
-		this.victims.add(new Victim(name, address, service));
-		this.fireTableDataChanged();
 	}
 
 	@Override
@@ -50,12 +39,12 @@ public class VictimsTableModel extends AbstractTableModel implements VictimContr
 
 	@Override
 	public int getRowCount() {
-		return this.victims.size();
+		return VictimControllerFactory.getInstance().getController().count();
 	}
 
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex) {
-		final Victim victim = this.victims.get(rowIndex);
+		final Victim victim = VictimControllerFactory.getInstance().getController().getVictim(rowIndex);
 		switch (columnIndex) {
 		case 0:
 			return victim.getName();
@@ -63,22 +52,6 @@ public class VictimsTableModel extends AbstractTableModel implements VictimContr
 			return victim.getAddress();
 		}
 		return "Invalid column index: " + columnIndex;
-	}
-
-	@Override
-	public void removeVictim(final String address) {
-		final Iterator<Victim> it = this.victims.iterator();
-		while (it.hasNext()) {
-			if (it.next().getAddress().equals(address)) {
-				it.remove();
-			}
-		}
-		this.fireTableDataChanged();
-	}
-
-	@Override
-	public void removeVictim(final Victim victim) {
-		this.removeVictim(victim.getAddress());
 	}
 
 }
