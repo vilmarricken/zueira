@@ -14,6 +14,12 @@ public class Victim {
 		this.service = service;
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		final Victim v = (Victim) obj;
+		return (v).address.equals(this.address) && v.name.equals(this.name) && v.service == this.service;
+	}
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -24,6 +30,11 @@ public class Victim {
 
 	public int getService() {
 		return this.service;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.address.hashCode();
 	}
 
 	public void setAddress(final String address) {

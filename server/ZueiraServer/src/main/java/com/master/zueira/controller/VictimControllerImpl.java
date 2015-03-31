@@ -3,8 +3,9 @@ package com.master.zueira.controller;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import com.master.zueira.object.Victim;
 
@@ -22,7 +23,7 @@ public class VictimControllerImpl implements VictimController {
 
 	private int selected = -1;
 
-	private final Vector<Victim> victims = new Vector<Victim>();
+	private final List<Victim> victims = new ArrayList<Victim>();
 
 	public VictimControllerImpl() {
 	}
@@ -71,6 +72,7 @@ public class VictimControllerImpl implements VictimController {
 		this.removeVictim(victim.getAddress());
 	}
 
+	@Override
 	public void setListener(final VictimControllerListener listener) {
 		this.listener = listener;
 		this.listener.changed();
