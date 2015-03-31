@@ -27,7 +27,7 @@ public class ZueiraMouse extends ZueiraAbstract {
 			for (int i = 0; i < defs[0]; i++) {
 				final int x = r.nextInt(3000) % maxX;
 				final int y = r.nextInt(3000) % maxY;
-				System.out.println(x + "X" + y);
+				// System.out.println(x + "X" + y);
 				robot.mouseMove(x, y);
 				Thread.sleep(defs[1]);
 			}

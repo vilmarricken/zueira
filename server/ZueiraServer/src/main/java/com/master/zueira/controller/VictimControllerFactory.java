@@ -5,17 +5,17 @@ public class VictimControllerFactory {
 	private static final VictimControllerFactory INSTANCE = new VictimControllerFactory();
 
 	public static VictimControllerFactory getInstance() {
-		return INSTANCE;
+		return VictimControllerFactory.INSTANCE;
 	}
 
-	private VictimController controller = new VictimControllerImpl();
+	private final VictimController controller = new VictimControllerImpl();
 
 	public VictimController getController() {
 		return this.controller;
 	}
 
-	public void zuar(String zueira) {
-		controller.zuar(zueira);
+	public void zuar(final String zueira, final String value) {
+		this.controller.zuar(zueira, value);
 	}
 
 }

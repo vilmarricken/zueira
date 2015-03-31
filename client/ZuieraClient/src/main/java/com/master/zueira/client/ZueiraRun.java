@@ -12,9 +12,10 @@ public class ZueiraRun implements Runnable {
 
 	private static String OPTION_RUN = "1";
 
-	private Socket socket;
+	private final Socket socket;
 
 	public ZueiraRun(final Socket socket) {
+		this.socket = socket;
 	}
 
 	@Override
@@ -31,7 +32,7 @@ public class ZueiraRun implements Runnable {
 			try {
 				final String value = out.toString();
 				final String[] values = value.split("#");
-				if (values[0].equals(OPTION_RUN)) {
+				if (values[0].equals(ZueiraRun.OPTION_RUN)) {
 					final Zueira z = ZueiraFactory.getZueira(values[1]);
 					z.run(values[2]);
 				}

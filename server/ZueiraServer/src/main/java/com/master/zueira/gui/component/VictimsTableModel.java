@@ -3,9 +3,10 @@ package com.master.zueira.gui.component;
 import javax.swing.table.AbstractTableModel;
 
 import com.master.zueira.controller.VictimControllerFactory;
+import com.master.zueira.controller.VictimControllerListener;
 import com.master.zueira.object.Victim;
 
-public class VictimsTableModel extends AbstractTableModel {
+public class VictimsTableModel extends AbstractTableModel implements VictimControllerListener {
 
 	/**
 	 *
@@ -14,6 +15,11 @@ public class VictimsTableModel extends AbstractTableModel {
 
 	public VictimsTableModel() {
 		super();
+	}
+
+	@Override
+	public void changed() {
+		this.fireTableDataChanged();
 	}
 
 	@Override

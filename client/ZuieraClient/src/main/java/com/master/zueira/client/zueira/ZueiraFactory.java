@@ -7,7 +7,10 @@ public class ZueiraFactory {
 			return new ZueiraBeep();
 		}
 		if (codigo.equals("1")) {
-
+			return new ZueiraMouse();
+		}
+		if (codigo.equals("2")) {
+			return new ZueiraBeep();
 		}
 		return new ZueiraBeep();
 	}
