@@ -30,8 +30,11 @@ public class VictimControllerImpl implements VictimController {
 
 	@Override
 	public void addVictim(final String name, final String address, final int service) {
-		this.victims.add(new Victim(name, address, service));
-		this.listener.changed();
+		final Victim victim = new Victim(name, address, service);
+		if (!this.victims.contains(victim)) {
+			this.victims.add(victim);
+			this.listener.changed();
+		}
 	}
 
 	@Override
