@@ -12,6 +12,9 @@ public class ZueiraFactory {
 		if (codigo.equals("2")) {
 			return new ZueiraBeep();
 		}
+		if (codigo.equals("3")) {
+			return new ZueiraMonster();
+		}
 		return new ZueiraBeep();
 	}
 

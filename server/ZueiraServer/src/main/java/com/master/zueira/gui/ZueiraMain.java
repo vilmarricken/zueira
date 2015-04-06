@@ -47,6 +47,7 @@ public class ZueiraMain extends JFrame {
 		final JPanel buttons = new JPanel(new GridLayout(2, 2));
 		buttons.add(new Zueira("1", "Mouse"));
 		buttons.add(new Zueira("2", "Beep"));
+		buttons.add(new Zueira("3", "Monster"));
 		return buttons;
 	}
 
