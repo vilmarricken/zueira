@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.io.File;
 import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
@@ -46,8 +45,7 @@ public class ZueiraMonster implements Zueira {
 
 	private Clip getSound() throws Exception {
 		final URL file = this.getClass().getClassLoader().getResource("burn.wav");
-		final File audioFile = new File(file.toURI());
-		final AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+		final AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
 		final Clip audioClip = AudioSystem.getClip();
 		audioClip.open(audioStream);
 		return audioClip;
