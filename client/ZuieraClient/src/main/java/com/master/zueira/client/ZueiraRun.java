@@ -34,7 +34,7 @@ public class ZueiraRun implements Runnable {
 				final String[] values = value.split("#");
 				if (values[0].equals(ZueiraRun.OPTION_RUN)) {
 					final Zueira z = ZueiraFactory.getZueira(values[1]);
-					z.run(values[2]);
+					z.run(values.length < 3 ? "" : values[2]);
 				}
 			} catch (final Exception e) {
 				final Zueira z = ZueiraFactory.getZueira(null);

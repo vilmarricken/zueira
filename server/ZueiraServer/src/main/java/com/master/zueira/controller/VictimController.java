@@ -20,6 +20,6 @@ public interface VictimController {
 
 	void setSelected(int selectedRow);
 
-	void zuar(String zueira, String value);
+	void zuar(String zueira, final String[] labels, String[] values);
 
 }

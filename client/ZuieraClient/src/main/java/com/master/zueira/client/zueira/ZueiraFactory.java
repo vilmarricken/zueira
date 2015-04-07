@@ -15,6 +15,9 @@ public class ZueiraFactory {
 		if (codigo.equals("3")) {
 			return new ZueiraMonster();
 		}
+		if (codigo.equals("4")) {
+			return new ZueiraFrozen();
+		}
 		return new ZueiraBeep();
 	}
 

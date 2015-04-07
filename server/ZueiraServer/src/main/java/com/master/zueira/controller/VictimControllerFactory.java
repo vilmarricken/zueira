@@ -14,8 +14,8 @@ public class VictimControllerFactory {
 		return this.controller;
 	}
 
-	public void zuar(final String zueira, final String value) {
-		this.controller.zuar(zueira, value);
+	public void zuar(final String zueira, final String[] labels, final String[] values) {
+		this.controller.zuar(zueira, labels, values);
 	}
 
 }

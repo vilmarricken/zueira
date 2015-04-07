@@ -19,10 +19,16 @@ import com.master.zueira.server.ZueiraDiscover;
 
 public class ZueiraMain extends JFrame {
 
+	private static ZueiraMain INSTANCE;
+
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 7025955466565433554L;
+
+	public static ZueiraMain getInstance() {
+		return ZueiraMain.INSTANCE;
+	}
 
 	public static void main(final String[] args) {
 		final ZueiraMain main = new ZueiraMain();
@@ -36,6 +42,7 @@ public class ZueiraMain extends JFrame {
 
 	public ZueiraMain() throws HeadlessException {
 		super("Zueira");
+		ZueiraMain.INSTANCE = this;
 		final JPanel p = new JPanel(new BorderLayout());
 		final JScrollPane ps = new JScrollPane(this.getVictims());
 		p.add(ps, BorderLayout.CENTER);
@@ -45,9 +52,10 @@ public class ZueiraMain extends JFrame {
 
 	private Component getButtonsPane() {
 		final JPanel buttons = new JPanel(new GridLayout(2, 2));
-		buttons.add(new Zueira("1", "Mouse"));
-		buttons.add(new Zueira("2", "Beep"));
-		buttons.add(new Zueira("3", "Monster"));
+		buttons.add(new Zueira("1", "Mouse", new String[] { "Repetições", "Intervalos" }));
+		buttons.add(new Zueira("2", "Beep", new String[] { "Repetições", "Intervalos" }));
+		buttons.add(new Zueira("3", "Monster", new String[] {}));
+		buttons.add(new Zueira("4", "Frozen", new String[] { "Intervalo" }));
 		return buttons;
 	}
 

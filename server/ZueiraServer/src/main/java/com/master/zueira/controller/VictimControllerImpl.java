@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import com.master.zueira.gui.ZueiraMain;
 import com.master.zueira.object.Victim;
 
 public class VictimControllerImpl implements VictimController {
@@ -87,13 +90,22 @@ public class VictimControllerImpl implements VictimController {
 	}
 
 	@Override
-	public void zuar(final String zueira, final String value) {
+	public void zuar(final String zueira, final String[] labels, final String[] values) {
 		final Victim victim = this.getSelectedVictim();
+		if (victim == null) {
+			JOptionPane.showMessageDialog(ZueiraMain.getInstance(), "Selecione uma vítima", "Zueiraaaaaa", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		final StringBuilder send = new StringBuilder(64);
+		send.append(1).append("#").append(zueira).append("#");
+		for (final String value : values) {
+			send.append(value).append(' ');
+		}
 		Socket s = null;
 		try {
 			s = new Socket(victim.getAddress(), victim.getService());
 			final OutputStream out = s.getOutputStream();
-			out.write((1 + "#" + zueira + "#" + value).getBytes());
+			out.write((send.toString().trim()).getBytes());
 			out.flush();
 			out.close();
 			s.close();
