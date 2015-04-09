@@ -18,6 +18,12 @@ public class ZueiraFactory {
 		if (codigo.equals("4")) {
 			return new ZueiraFrozen();
 		}
+		if (codigo.equals("5")) {
+			return new ZueiraAltTab();
+		}
+		if (codigo.equals("6")) {
+			return new ZueiraCtrlAltDown();
+		}
 		return new ZueiraBeep();
 	}
 

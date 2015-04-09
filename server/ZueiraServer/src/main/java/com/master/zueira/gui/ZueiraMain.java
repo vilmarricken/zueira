@@ -1,10 +1,12 @@
 package com.master.zueira.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -51,11 +53,14 @@ public class ZueiraMain extends JFrame {
 	}
 
 	private Component getButtonsPane() {
-		final JPanel buttons = new JPanel(new GridLayout(2, 2));
+		final JPanel buttons = new JPanel(new GridLayout(3, 2));
+		buttons.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 		buttons.add(new Zueira("1", "Mouse", new String[] { "Repetições", "Intervalos" }));
 		buttons.add(new Zueira("2", "Beep", new String[] { "Repetições", "Intervalos" }));
-		buttons.add(new Zueira("3", "Monster", new String[] {}));
 		buttons.add(new Zueira("4", "Frozen", new String[] { "Intervalo" }));
+		buttons.add(new Zueira("5", "Alt + Tab", new String[] { "Repetiçoes" }));
+		buttons.add(new Zueira("6", "Ctrl + Alt + DOWN", new String[] {}));
+		buttons.add(new Zueira("3", "Monster", new String[] {}));
 		return buttons;
 	}
 

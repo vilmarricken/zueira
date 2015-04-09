@@ -40,7 +40,7 @@ public class Zueira extends JPanel {
 		this.txValues = new JTextField[labels.length];
 		this.setLayout(new GridBagLayout());
 		this.build();
-		this.setBorder(BorderFactory.createLineBorder(Color.black, 3));
+		this.setBorder(BorderFactory.createLineBorder(Color.black, 1));
 	}
 
 	private void build() {
